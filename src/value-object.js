@@ -7,7 +7,6 @@ export default class ValueObject extends Model {
         super(params);
 
         this.properties.forEach((property) => {
-            const key = '_' + property;
             Object.defineProperty(this, property, {
                 enumerable: true,
                 get: () => params[property],
