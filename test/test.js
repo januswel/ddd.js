@@ -16,8 +16,25 @@ class Name extends ValueObject {
     }
 }
 
+class Person extends ValueObject {
+    constructor (params) {
+        super(params);
+    }
+
+    get properties () {
+        return {
+            name: Name,
+            age: Number,
+        };
+    }
+}
+
 let createName = (params) => {
     return new Name(params);
+};
+
+let createPerson = (params) => {
+    return new Person(params);
 };
 
 describe('ValueObject', function () {
@@ -87,6 +104,23 @@ describe('ValueObject', function () {
                 first: 1,
                 last: 2,
             });
+        }, TypeError);
+    });
+
+    it('can define nested value-object', function () {
+        let janus = createPerson({
+            name: {
+                first: 'janus',
+                last: 'wel',
+            },
+            age: 1,
+        });
+        assert(janus != null);
+        assert(janus.name.first === 'janus');
+        assert(janus.name.last === 'wel');
+        assert(janus.age === 1);
+        assert.throws(() => {
+            janus.name.first = 'foo';
         }, TypeError);
     });
 });

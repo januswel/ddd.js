@@ -2,11 +2,23 @@
 
 import Model from './model.js';
 
+function isBuiltInType (type) {
+    switch (type) {
+        case String:
+        case Number:
+        case Boolean:
+        case Date:
+        case RegExp:
+        case Array:
+            return true;
+    }
+}
 function constructValue (src, type) {
-    if (typeof src === 'object') {
-        if (!(src instanceof type)) {
+    if (typeof src === 'object' && !isBuiltInType(type)) {
+        if (!(src instanceof type) && src.constructor.name !== 'Object') {
             throw new TypeError('specified value is not instance of ' + type.constructor.name + ': ' + src);
         }
+
         return new type(src);
     }
 
