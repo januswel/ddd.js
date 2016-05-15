@@ -17,8 +17,13 @@ let create = (params) => {
     return new Name(params);
 };
 
-describe('Name', function () {
+describe('ValueObject', function () {
     it('can create an instance', function () {
+        let valueObject = create();
+        assert(valueObject != null);
+    });
+
+    it('can define models by using ValueObject class', function () {
         let janus = create({
             first: 'janus',
             last: 'wel',
