@@ -122,5 +122,14 @@ describe('ValueObject', function () {
         assert.throws(() => {
             janus.name.first = 'foo';
         }, TypeError);
+
+        let another = createPerson({
+            name: {
+                first: 'janus',
+                last: 'wel',
+            },
+            age: 1,
+        });
+        assert(janus.equals(another));
     });
 });

@@ -52,7 +52,12 @@ export default class ValueObject extends Model {
 
     equals (another) {
         return Object.keys(this.properties).map((property) => {
-            return this[property] === another[property];
+            const a = this[property];
+            const b = another[property];
+
+            return a.equals
+                ? a.equals(b)
+                : a === b;
         }).reduce((previous, current) => {
             return previous && current;
         }, true);
