@@ -39,7 +39,7 @@ let createPerson = (params) => {
 
 describe('ValueObject', function () {
     it('can create an instance', function () {
-        let valueObject = createName();
+        let valueObject = new ValueObject();
         assert(valueObject != null);
     });
 
@@ -74,7 +74,7 @@ describe('ValueObject', function () {
             first: 'b',
             last: 'a',
         });
-        assert(a !== b);
+        assert(!a.equals(b));
     });
 
     it('should be error to change child values', function () {
