@@ -56,4 +56,12 @@ describe('ValueObject', function () {
         });
         assert(a !== b);
     });
+
+    it('should be error to change child values', function () {
+        let a = create({
+            first: 'a',
+            last: 'a',
+        });
+        assert.throws(() => a.first = 'error', TypeError);
+    });
 });
