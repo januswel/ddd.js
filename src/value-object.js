@@ -2,20 +2,44 @@
 
 import Model from './model.js';
 
+function constructValue (src, type) {
+    if (typeof src === 'object') {
+        if (!(src instanceof type)) {
+            throw new TypeError('specified value is not instance of ' + type.constructor.name + ': ' + src);
+        }
+        return new type(src);
+    }
+
+    if (src.constructor !== type) {
+        throw new TypeError('specified value is not constructed by ' + type.toString() + ': ' + src);
+    }
+
+    return src;
+}
+
 export default class ValueObject extends Model {
     constructor (params) {
         super(params);
 
-        this.properties.forEach((property) => {
-            Object.defineProperty(this, property, {
+        for (let name in this.properties) {
+            const type = this.properties[name];
+            const rawValue = params != null
+                ? params[name]
+                : undefined;
+            const value = rawValue != null
+                ? constructValue(rawValue, type)
+                : undefined;
+
+
+            Object.defineProperty(this, name, {
                 enumerable: true,
-                get: () => params[property],
+                get: () => value,
             });
-        });
+        }
     }
 
     equals (another) {
-        return this.properties.map((property) => {
+        return Object.keys(this.properties).map((property) => {
             return this[property] === another[property];
         }).reduce((previous, current) => {
             return previous && current;
