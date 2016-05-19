@@ -29,6 +29,32 @@ class Person extends ValueObject {
     }
 }
 
+class NoPropertyValueObject extends ValueObject {
+    constructor (params) {
+        super(params);
+    }
+}
+
+class NullPropertyValueObject extends ValueObject {
+    constructor (params) {
+        super(params);
+    }
+
+    static get properties () {
+        return null;
+    }
+}
+
+class InvalidTypePropertyValueObject extends ValueObject {
+    constructor (params) {
+        super(params);
+    }
+
+    static get properties () {
+        return 42;
+    }
+}
+
 let createName = (params) => {
     return new Name(params);
 };
@@ -38,9 +64,10 @@ let createPerson = (params) => {
 };
 
 describe('ValueObject', function () {
-    it('can create an instance', function () {
-        let valueObject = new ValueObject();
-        assert(valueObject != null);
+    it('can not create an instance of ValueObject', function () {
+        assert.throws(() => {
+            new ValueObject();
+        }, Error);
     });
 
     it('can define models by using ValueObject class', function () {
@@ -63,6 +90,24 @@ describe('ValueObject', function () {
             last: 'a',
         });
         assert(a01.equals(a02));
+    });
+
+    it('can not define a model that has no properties', function () {
+        assert.throws(() => {
+            new NoPropertyValueObject();
+        }, TypeError);
+    });
+
+    it('can not define a model that has invalid properties definition: null', function () {
+        assert.throws(() => {
+            new NullPropertyValueObject();
+        }, TypeError);
+    });
+
+    it('can not define a model that has invalid properties definition: non-object', function () {
+        assert.throws(() => {
+            new InvalidTypePropertyValueObject();
+        }, TypeError);
     });
 
     it('should not be equal a instance that has different values', function () {

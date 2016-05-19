@@ -13,6 +13,7 @@ function isBuiltInType (type) {
             return true;
     }
 }
+
 function constructValue (src, type) {
     if (typeof src === 'object' && !isBuiltInType(type)) {
         if (!(src instanceof type) && src.constructor.name !== 'Object') {
@@ -34,6 +35,9 @@ export default class ValueObject extends Model {
         super(params);
 
         const properties = this.constructor.properties;
+        if (properties == null || typeof properties !== 'object') {
+            throw TypeError('define properties by returning object for ' + this.constructor.name);
+        }
 
         for (let name in properties) {
             const type = properties[name];
