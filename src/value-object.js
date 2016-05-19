@@ -33,8 +33,10 @@ export default class ValueObject extends Model {
     constructor (params) {
         super(params);
 
-        for (let name in this.properties) {
-            const type = this.properties[name];
+        const properties = this.constructor.properties;
+
+        for (let name in properties) {
+            const type = properties[name];
             const rawValue = params != null
                 ? params[name]
                 : undefined;
@@ -51,7 +53,7 @@ export default class ValueObject extends Model {
     }
 
     equals (another) {
-        return Object.keys(this.properties).map((property) => {
+        return Object.keys(this.constructor.properties).map((property) => {
             const a = this[property];
             const b = another[property];
 

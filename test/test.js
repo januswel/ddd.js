@@ -8,7 +8,7 @@ class Name extends ValueObject {
         super(params);
     }
 
-    get properties () {
+    static get properties () {
         return {
             first: String,
             last: String,
@@ -21,7 +21,7 @@ class Person extends ValueObject {
         super(params);
     }
 
-    get properties () {
+    static get properties () {
         return {
             name: Name,
             age: Number,
