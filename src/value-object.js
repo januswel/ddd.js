@@ -48,12 +48,10 @@ export default class ValueObject extends Model {
                 ? constructValue(rawValue, type)
                 : undefined;
 
-
-            Object.defineProperty(this, name, {
-                enumerable: true,
-                get: () => value,
-            });
+            this[name] = value;
         }
+
+        Object.freeze(this);
     }
 
     equals (another) {
