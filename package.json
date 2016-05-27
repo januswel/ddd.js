@@ -6,7 +6,8 @@
   "scripts": {
     "build": "babel src -d dist",
     "build:watch": "babel src -d dist -w",
-    "test": "mocha --require babel-register"
+    "test": "mocha --require babel-register",
+    "test:watch": "nodemon --watch ./src --watch ./test --exec npm test"
   },
   "repository": {
     "type": "git",
@@ -26,6 +27,7 @@
     "babel-preset-power-assert": "^1.0.0",
     "babel-register": "^6.8.0",
     "mocha": "^2.4.5",
+    "nodemon": "^1.9.2",
     "power-assert": "^1.4.1"
   }
 }
