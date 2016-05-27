@@ -1,6 +1,7 @@
 'use strict';
 
 import Model from './model.js';
+import sha256 from 'sha256'
 
 function isBuiltInType (type) {
     switch (type) {
@@ -54,16 +55,18 @@ export default class ValueObject extends Model {
         Object.freeze(this);
     }
 
-    equals (another) {
-        return Object.keys(this.constructor.properties).map((property) => {
-            const a = this[property];
-            const b = another[property];
+    get id () {
+        return sha256((Object.keys(this.constructor.properties)).sort().map((property) => {
+            return this[property].toString();
+        }).join(''));
+    }
 
-            return a.equals
-                ? a.equals(b)
-                : a === b;
-        }).reduce((previous, current) => {
-            return previous && current;
-        }, true);
+    static create (valueObject, params) {
+        const instance = new valueObject(params);
+        const id = instance.id;
+        if (!(id in valueObject)) {
+            valueObject[id] = instance;
+        }
+        return valueObject[id];
     }
 }

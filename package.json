@@ -19,7 +19,9 @@
   ],
   "author": "janus_wel",
   "license": "MIT",
-  "dependencies": {},
+  "dependencies": {
+    "sha256": "^0.2.0"
+  },
   "devDependencies": {
     "babel-cli": "^6.8.0",
     "babel-plugin-unassert": "^2.1.0",

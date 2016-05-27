@@ -1,7 +1,7 @@
 'use strict';
 
 import ValueObject from '../src/value-object'
-import assert from 'power-assert'
+import assert from 'assert'
 
 class Name extends ValueObject {
     constructor (params) {
@@ -55,14 +55,6 @@ class InvalidTypePropertyValueObject extends ValueObject {
     }
 }
 
-let createName = (params) => {
-    return new Name(params);
-};
-
-let createPerson = (params) => {
-    return new Person(params);
-};
-
 describe('ValueObject', function () {
     it('can not create an instance of ValueObject', function () {
         assert.throws(() => {
@@ -71,7 +63,7 @@ describe('ValueObject', function () {
     });
 
     it('can define models by using ValueObject class', function () {
-        let janus = createName({
+        let janus = ValueObject.create(Name, {
             first: 'janus',
             last: 'wel',
         });
@@ -81,15 +73,15 @@ describe('ValueObject', function () {
     });
 
     it('should be equal to a instance that has the same values', function () {
-        let a01 = createName({
+        let a01 = ValueObject.create(Name, {
             first: 'a',
             last: 'a',
         });
-        let a02 = createName({
+        let a02 = ValueObject.create(Name, {
             first: 'a',
             last: 'a',
         });
-        assert(a01.equals(a02));
+        assert(a01 === a02);
     });
 
     it('can not define a model that has no properties', function () {
@@ -111,28 +103,28 @@ describe('ValueObject', function () {
     });
 
     it('should not be equal a instance that has different values', function () {
-        let a = createName({
+        let a = ValueObject.create(Name, {
             first: 'a',
             last: 'a',
         });
-        let b = createName({
+        let b = ValueObject.create(Name, {
             first: 'b',
             last: 'a',
         });
-        assert(!a.equals(b));
+        assert(a !== b);
     });
 
     it('should be error to change child values', function () {
-        let a = createName({
+        let a = ValueObject.create(Name, {
             first: 'a',
             last: 'a',
         });
         assert.throws(() => a.first = 'error', TypeError);
     });
 
-    it('should be error to createName instances with values that have different types from properties: Object', function () {
+    it('should be error to create Name instances with values that have different types from properties: Object', function () {
         assert.throws(() => {
-            createName({
+            ValueObject.create(Name, {
                 first: {
                     f: 1
                 },
@@ -143,9 +135,9 @@ describe('ValueObject', function () {
         }, TypeError);
     });
 
-    it('should be error to createName instances with values that have different types from properties: build-in type', function () {
+    it('should be error to create Name instances with values that have different types from properties: build-in type', function () {
         assert.throws(() => {
-            createName({
+            ValueObject.create(Name, {
                 first: 1,
                 last: 2,
             });
@@ -153,7 +145,7 @@ describe('ValueObject', function () {
     });
 
     it('can define nested value-object', function () {
-        let janus = createPerson({
+        let janus = ValueObject.create(Person, {
             name: {
                 first: 'janus',
                 last: 'wel',
@@ -168,13 +160,13 @@ describe('ValueObject', function () {
             janus.name.first = 'foo';
         }, TypeError);
 
-        let another = createPerson({
+        let another = ValueObject.create(Person, {
             name: {
                 first: 'janus',
                 last: 'wel',
             },
             age: 1,
         });
-        assert(janus.equals(another));
+        assert(janus === another);
     });
 });
