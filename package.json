@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "build": "babel src -d dist",
+    "build:watch": "babel src -d dist -w",
     "test": "mocha --require babel-register"
   },
   "repository": {
